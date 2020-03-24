@@ -93,7 +93,12 @@ def main():
 
     image = pygame.image.load (loader.filepath("Queen's room.png"))
     image = pygame.transform.scale(image,(1280,720))
+
+    sound = pygame.mixer.music.load("data/RepeatMusic.mp3")
+    pygame.mixer.music.set_volume(.5)
+    pygame.mixer.music.play(-1)
     while True:
+        
         time_delta = clock.tick(60) / 1000
 
         for event in pygame.event.get():

@@ -39,9 +39,13 @@ class Newspaper:
         self.finished = False
 
         self.manager = pygame_gui.UIManager((1280, 720))
+        self.sound = pygame.mixer.Sound("data/NewsPaperMusic.wav")
 
     def display(self, time_delta):
         screen = pygame.display.get_surface()
+
+        if self.rotation == 0 and self.rotating == True:
+            pygame.mixer.Sound.play(self.sound)
 
         if self.rotating:
             self.rotation += time_delta * 350

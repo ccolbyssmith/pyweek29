@@ -50,6 +50,7 @@ class Decision:
     def __init__(self, name):
         self.name = name
 
+        self.buttonSound = pygame.mixer.Sound("data/ButtonSound.wav")
         self.text = "text"
         self.options = ["choice 1", "choice 2", "choice 3"]
         self.outcomes = ["this happened", "that happened", "something else"]
@@ -91,6 +92,7 @@ class Decision:
 
         if event.type == pygame.USEREVENT:
             if event.user_type == "ui_button_pressed":
+                pygame.mixer.Sound.play(self.buttonSound)
                 if event.ui_element in self.decision_buttons:
                     user_choice = self.decision_buttons.index(event.ui_element)
 
