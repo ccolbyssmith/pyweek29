@@ -19,6 +19,7 @@ def find_center(image):
 
 class Newspaper:
     def __init__(self, message):
+        self.playSound = False
         newspaper = pygame.image.load(loader.filepath("newspaper.png"))
         newspaper = scale_image(newspaper, 2)
         newspaper = newspaper.convert_alpha()
@@ -39,13 +40,9 @@ class Newspaper:
         self.finished = False
 
         self.manager = pygame_gui.UIManager((1280, 720))
-        self.sound = pygame.mixer.Sound("data/NewsPaperMusic.wav")
 
     def display(self, time_delta):
         screen = pygame.display.get_surface()
-
-        if self.rotation == 0 and self.rotating == True:
-            pygame.mixer.Sound.play(self.sound)
 
         if self.rotating:
             self.rotation += time_delta * 350
@@ -70,10 +67,14 @@ class Newspaper:
 
         return self.finished
 
-    def process_events(self, event):
+    def process_events(self, event, sounds):
         self.manager.process_events(event)
+        if self.playSound == False:
+            sounds.playNewspaperSound()
+            self.playSound = True
 
         if event.type == pygame.USEREVENT:
             if event.user_type == "ui_button_pressed":
                 if event.ui_element == self.next_button:
+                    sounds.playButtonSound()
                     self.finished = True

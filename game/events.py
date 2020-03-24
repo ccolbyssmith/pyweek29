@@ -33,12 +33,13 @@ class Event:
 
         return self.finished
 
-    def process_events(self, event):
+    def process_events(self, event, sounds):
         self.manager.process_events(event)
 
         if event.type == pygame.USEREVENT:
             if event.user_type == "ui_button_pressed":
                 if event.ui_element == self.next_button:
+                    sounds.playButtonSound()
                     self.finished = True
 
                     Resources.instance.food += self.impacts[0]
@@ -50,7 +51,6 @@ class Decision:
     def __init__(self, name):
         self.name = name
 
-        self.buttonSound = pygame.mixer.Sound("data/ButtonSound.wav")
         self.text = "text"
         self.options = ["choice 1", "choice 2", "choice 3"]
         self.outcomes = ["this happened", "that happened", "something else"]
@@ -87,13 +87,13 @@ class Decision:
 
         return self.finished
 
-    def process_events(self, event):
+    def process_events(self, event, sounds):
         self.manager.process_events(event)
 
         if event.type == pygame.USEREVENT:
             if event.user_type == "ui_button_pressed":
-                pygame.mixer.Sound.play(self.buttonSound)
                 if event.ui_element in self.decision_buttons:
+                    sounds.playButtonSound()
                     user_choice = self.decision_buttons.index(event.ui_element)
 
                     self.textbox.html_text = self.outcomes[user_choice]
@@ -111,6 +111,7 @@ class Decision:
                     )
 
                 if event.ui_element == self.next_button:
+                    sounds.playButtonSound()
                     self.finished = True
 
     def _update_resources(self, user_choice):
@@ -124,5 +125,5 @@ class NoDecision:
     def display(self, _):
         pass
 
-    def process_events(self, _):
+    def process_events(self, _, sounds):
         pass

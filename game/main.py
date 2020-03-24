@@ -15,6 +15,7 @@ import pygame_gui
 from game import loader
 from game import events
 from game import popups
+from game import Sound
 from game.resources import Resources
 
 
@@ -94,12 +95,14 @@ def main():
     image = pygame.image.load (loader.filepath("Queen's room.png"))
     image = pygame.transform.scale(image,(1280,720))
 
-    sound = pygame.mixer.music.load("data/RepeatMusic.mp3")
-    pygame.mixer.music.set_volume(.5)
-    pygame.mixer.music.play(-1)
+    sounds = Sound.Sound(manager, width, height)
+    sounds.playMusic()
+                                                       
     while True:
         
         time_delta = clock.tick(60) / 1000
+
+        sounds.updateVolume()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -110,7 +113,7 @@ def main():
                 pass
 
             manager.process_events(event)
-            current_decision.process_events(event)
+            current_decision.process_events(event, sounds)
 
         manager.update(time_delta)
 
