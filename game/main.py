@@ -96,13 +96,20 @@ def main():
     image = pygame.transform.scale(image,(1280,720))
 
     sounds = Sound.Sound(manager, width, height)
+    sounds.displayVolumeButton()
     sounds.playMusic()
                                                        
     while True:
         
         time_delta = clock.tick(60) / 1000
 
-        sounds.updateVolume()
+        if sounds.volumeButton.check_pressed() and sounds.slidesDisplayed == False:
+            sounds.displayVolumeSlides()
+        if sounds.volumeButton.check_pressed() and sounds.slidesDisplayed:
+            sounds.killVolumeSlides()
+            sounds.displayVolumeButton()
+        if sounds.slidesDisplayed:
+            sounds.updateVolume()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
